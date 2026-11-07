@@ -1,0 +1,219 @@
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a routerLink="/dashboard" class="crumb-home"><span class="material-icons">home</span></a>
+  <span class="sep">/</span>
+  <a routerLink="/patients">Patients</a>
+  <span class="sep">/</span>
+  <span class="current">Register Patient</span>
+</nav>
+
+<section class="card">
+  <header class="card-header">
+    <span class="material-icons">person_add</span>
+    <h2>Patient Registration</h2>
+  </header>
+
+  <form #patientForm class="card-body" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    @if (saveError) { <p class="error" role="alert">{{ saveError }}</p> }
+
+    <!-- Patient number + branch -->
+    <div class="row g-3 mb-3">
+      <div class="field col-12 col-md-6">
+        <label for="patientNumber">Patient Number <span class="req">*</span></label>
+        <div class="d-flex gap-2">
+          <input id="patientNumber" type="text" class="readonly" formControlName="patientNumber"
+                 placeholder="Generate patient number" readonly />
+          <button type="button" class="btn btn-primary" (click)="generatePatientNumber()">Generate</button>
+        </div>
+        @if (invalid('patientNumber')) { <small class="error">Patient number is required</small> }
+      </div>
+
+      <div class="field col-12 col-md-6">
+        <label for="branchId">Registration Branch <span class="req">*</span></label>
+        <div class="input-icon">
+          <span class="material-icons lead">apartment</span>
+          <select id="branchId" formControlName="branchId">
+            <option [ngValue]="null" disabled>Select a branch</option>
+            @for (b of branches; track b.id) { <option [ngValue]="b.id">{{ b.name }}</option> }
+          </select>
+        </div>
+        @if (invalid('branchId')) { <small class="error">Select a branch</small> }
+      </div>
+    </div>
+
+    <!-- Name -->
+    <div class="row g-3 mb-3">
+      <div class="field col-12 col-md-6">
+        <label for="firstName">First Name <span class="req">*</span></label>
+        <input id="firstName" type="text" formControlName="firstName" placeholder="Enter first name" />
+        @if (invalid('firstName')) { <small class="error">First name is required</small> }
+      </div>
+      <div class="field col-12 col-md-6">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" type="text" formControlName="lastName" placeholder="Enter last name" />
+      </div>
+    </div>
+
+    <!-- DOB + gender -->
+    <div class="row g-3 mb-3">
+      <div class="field col-12 col-md-6">
+        <label for="dateOfBirth">Date of Birth <span class="req">*</span></label>
+        <div class="input-icon">
+          <span class="material-icons lead">calendar_today</span>
+          <input id="dateOfBirth" type="date" formControlName="dateOfBirth"
+                 aria-label="Select date of birth" />
+        </div>
+        @if (invalid('dateOfBirth')) { <small class="error">Date of birth is required</small> }
+      </div>
+
+      <div class="field col-12 col-md-6">
+        <label id="genderLabel">Gender <span class="req">*</span></label>
+        <div class="radio-group" role="radiogroup" aria-labelledby="genderLabel">
+          <label class="radio"><input type="radio" value="MALE" formControlName="gender" /><span class="dot"></span>Male</label>
+          <label class="radio"><input type="radio" value="FEMALE" formControlName="gender" /><span class="dot"></span>Female</label>
+          <label class="radio"><input type="radio" value="OTHER" formControlName="gender" /><span class="dot"></span>Other</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blood group + mobile -->
+    <div class="row g-3 mb-3">
+      <div class="field col-12 col-md-6">
+        <label for="bloodGroup">Blood Group</label>
+        <div class="input-icon">
+          <span class="material-icons lead">water_drop</span>
+          <select id="bloodGroup" formControlName="bloodGroup">
+            <option value="">Select blood group</option>
+            @for (g of bloodGroups; track g) { <option [value]="g">{{ g }}</option> }
+          </select>
+        </div>
+      </div>
+      <div class="field col-12 col-md-6">
+        <label for="mobileNumber">Mobile Number <span class="req">*</span></label>
+        <div class="input-icon">
+          <span class="material-icons lead">call</span>
+          <input id="mobileNumber" type="tel" [attr.maxlength]="mobileNumberLength" formControlName="mobileNumber"
+                 [placeholder]="'Enter ' + mobileNumberLength + '-digit mobile number'" />
+        </div>
+        @if (invalid('mobileNumber')) { <small class="error">{{ mobileNumberError }}</small> }
+      </div>
+    </div>
+
+    <!-- Alternate mobile + email -->
+    <div class="row g-3 mb-3">
+      <div class="field col-12 col-md-6">
+        <label for="alternateMobile">Alternate Mobile Number</label>
+        <div class="input-icon">
+          <span class="material-icons lead">call</span>
+          <input id="alternateMobile" type="tel" [attr.maxlength]="mobileNumberLength" formControlName="alternateMobile"
+                 [placeholder]="'Enter ' + mobileNumberLength + '-digit mobile number'" />
+        </div>
+        @if (invalid('alternateMobile')) { <small class="error">{{ mobileNumberError }}</small> }
+      </div>
+      <div class="field col-12 col-md-6">
+        <label for="email">Email</label>
+        <div class="input-icon">
+          <span class="material-icons lead">mail</span>
+          <input id="email" type="email" formControlName="email" placeholder="name@example.com" />
+        </div>
+        @if (invalid('email')) { <small class="error">Enter a valid email address</small> }
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Address -->
+    <div class="row g-3 mb-3">
+      <div class="field col-12 col-md-6">
+        <label for="addressLine1">Address Line 1 <span class="req">*</span></label>
+        <div class="input-icon">
+          <span class="material-icons lead">location_on</span>
+          <input id="addressLine1" type="text" formControlName="addressLine1"
+                 placeholder="Enter street address" />
+        </div>
+        @if (invalid('addressLine1')) { <small class="error">Address is required</small> }
+      </div>
+      <div class="field col-12 col-md-6">
+        <label for="addressLine2">Address Line 2</label>
+        <input id="addressLine2" type="text" formControlName="addressLine2"
+               placeholder="Apartment, suite, etc. (optional)" />
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="field col-12 col-md-4">
+        <label for="city">City <span class="req">*</span></label>
+        <div class="input-icon">
+          <span class="material-icons lead">apartment</span>
+          <select id="city" formControlName="city">
+            <option value="" disabled>Select a city</option>
+            @for (c of cities; track c) { <option [value]="c">{{ c }}</option> }
+          </select>
+        </div>
+        @if (invalid('city')) { <small class="error">Select a city</small> }
+      </div>
+      <div class="field col-12 col-md-4">
+        <label for="state">State <span class="req">*</span></label>
+        <div class="input-icon">
+          <span class="material-icons lead">map</span>
+          <select id="state" formControlName="state">
+            <option value="" disabled>Select a state</option>
+            @for (s of states; track s) { <option [value]="s">{{ s }}</option> }
+          </select>
+        </div>
+        @if (invalid('state')) { <small class="error">Select a state</small> }
+      </div>
+      <div class="field col-12 col-md-4">
+        <label for="pincode">Pincode <span class="req">*</span></label>
+        <div class="input-icon">
+          <span class="material-icons lead">location_on</span>
+          <input id="pincode" type="text" maxlength="6" formControlName="pincode"
+                 placeholder="6-digit pincode" />
+        </div>
+        @if (invalid('pincode')) { <small class="error">Enter a 6-digit pincode</small> }
+      </div>
+    </div>
+
+    <!-- Emergency contact -->
+    <div class="row g-3 mb-3">
+      <div class="field col-12 col-md-6">
+        <label for="emergencyContactName">Emergency Contact Name</label>
+        <div class="input-icon">
+          <span class="material-icons lead">person</span>
+          <input id="emergencyContactName" type="text" formControlName="emergencyContactName"
+                 placeholder="Enter contact name" />
+        </div>
+      </div>
+      <div class="field col-12 col-md-6">
+        <label for="emergencyContactNumber">Emergency Contact Number</label>
+        <div class="input-icon">
+          <span class="material-icons lead">call</span>
+          <input id="emergencyContactNumber" type="tel" [attr.maxlength]="mobileNumberLength"
+                 formControlName="emergencyContactNumber"
+                 [placeholder]="'Enter ' + mobileNumberLength + '-digit mobile number'" />
+        </div>
+        @if (invalid('emergencyContactNumber')) { <small class="error">{{ mobileNumberError }}</small> }
+      </div>
+    </div>
+
+    <!-- Footer: active toggle + actions -->
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3 mt-2">
+      <label class="switch">
+        <span class="switch-label">Active Patient</span>
+        <input type="checkbox" formControlName="isActive" />
+        <span class="track"><span class="thumb"></span></span>
+      </label>
+
+      <div class="d-flex flex-column flex-sm-row gap-2">
+        <button type="submit" class="btn btn-primary" [disabled]="saving">
+          <span class="material-icons">save</span>{{ saving ? 'Saving...' : 'Save Patient' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="reset()">
+          <span class="material-icons">refresh</span>Reset
+        </button>
+        <button type="button" class="btn btn-outline" routerLink="/patients">
+          <span class="material-icons">close</span>Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+</section>

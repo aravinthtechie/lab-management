@@ -1,0 +1,119 @@
+@use '@angular/material' as mat;
+
+:root {
+  height: 100%;
+  @include mat.theme((
+    color: (primary: mat.$azure-palette, tertiary: mat.$blue-palette, theme-type: light),
+    typography: Roboto,
+    density: 0
+  ));
+
+  --lab-sidebar: #102c5c;
+  --lab-sidebar-on: #fff;
+  --lab-success: #2e7d32;
+  --lab-warning: #ed8e00;
+  --lab-danger: #c62828;
+  --lab-purple: #6f42c1;
+  --lab-text: var(--mat-sys-on-surface);
+  --lab-muted: var(--mat-sys-on-surface-variant);
+  --lab-surface: var(--mat-sys-surface);
+  --lab-surface-raised: var(--mat-sys-surface-container-lowest);
+  --lab-surface-subtle: var(--mat-sys-surface-container-low);
+  --lab-border: var(--mat-sys-outline-variant);
+
+  --bs-body-color: var(--mat-sys-on-surface);
+  --bs-body-bg: var(--mat-sys-surface);
+  --bs-emphasis-color: var(--mat-sys-on-surface);
+  --bs-secondary-color: var(--mat-sys-on-surface-variant);
+  --bs-tertiary-color: var(--mat-sys-on-surface-variant);
+  --bs-border-color: var(--mat-sys-outline-variant);
+}
+html.theme-dark {
+  color-scheme: dark;
+  @include mat.theme((color: (primary: mat.$azure-palette, tertiary: mat.$blue-palette, theme-type: dark)));
+}
+html.theme-ocean {
+  @include mat.theme((color: (primary: mat.$cyan-palette, tertiary: mat.$blue-palette, theme-type: light)));
+}
+html.theme-forest {
+  @include mat.theme((color: (primary: mat.$green-palette, tertiary: mat.$spring-green-palette, theme-type: light)));
+}
+html.theme-sunset {
+  color-scheme: dark;
+  @include mat.theme((color: (primary: mat.$orange-palette, tertiary: mat.$rose-palette, theme-type: dark)));
+}
+
+html.theme-dark,
+html.theme-sunset {
+  --lab-sidebar: #111827;
+  --lab-sidebar-on: #f1f5f9;
+  --lab-success: #81c784;
+  --lab-warning: #ffd54f;
+  --lab-danger: #ef9a9a;
+  --lab-purple: #ce93d8;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-large);
+  transition: background-color .25s, color .25s;
+}
+
+.text-body-secondary {
+  color: var(--mat-sys-on-surface-variant) !important;
+}
+
+.table {
+  --bs-table-color: var(--mat-sys-on-surface);
+  --bs-table-border-color: var(--mat-sys-outline-variant);
+}
+
+.form-control,
+.form-select {
+  color: var(--mat-sys-on-surface);
+  background-color: var(--mat-sys-surface);
+}
+
+.form-control::placeholder,
+form input::placeholder,
+form textarea::placeholder {
+  color: var(--mat-sys-on-surface-variant);
+  opacity: 1;
+}
+
+form {
+  .form-label,
+  .field > label,
+  mat-label {
+    font-family: Roboto, Arial, sans-serif;
+    font-size: .9375rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  input,
+  select,
+  textarea,
+  .form-control,
+  .form-select,
+  input[matInput] {
+    font-family: Roboto, Arial, sans-serif;
+    font-size: .9375rem;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  button,
+  .btn,
+  .form-check-label,
+  .switch-label {
+    font-weight: 500;
+  }
+}
