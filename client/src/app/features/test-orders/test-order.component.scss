@@ -1,0 +1,335 @@
+:host {
+  display: block;
+  color: var(--mat-sys-on-surface);
+}
+
+.order-card {
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--mat-sys-surface-container-lowest);
+  box-shadow: 0 2px 8px rgba(15, 27, 42, 0.12);
+}
+
+.order-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 50px;
+  padding: 0 24px;
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+
+  h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .material-icons {
+    font-size: 28px;
+  }
+}
+
+.order-body {
+  padding: 20px 24px 24px;
+}
+
+.form-label {
+  margin-bottom: 6px;
+  color: var(--mat-sys-on-surface);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.required,
+.field-error,
+.form-error {
+  color: var(--mat-sys-error);
+}
+
+.form-control,
+.form-select {
+  height: 42px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 6px;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: inherit;
+  font-size: 15px;
+}
+
+.notes-control {
+  height: auto;
+  min-height: 84px;
+  padding: 9px 12px;
+  resize: vertical;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--mat-sys-primary);
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.18);
+}
+
+.search-wrap {
+  position: relative;
+
+  > .material-icons {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: var(--mat-sys-on-surface-variant);
+    pointer-events: none;
+  }
+}
+
+.search-input {
+  padding-left: 42px;
+}
+
+.selected-patient {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 6px;
+  background: var(--mat-sys-surface-container);
+
+  small {
+    display: block;
+    margin-top: 2px;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.clear-button {
+  border: 0;
+  background: transparent;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.search-results {
+  position: relative;
+  z-index: 2;
+  max-height: 220px;
+  overflow-y: auto;
+  margin-top: 4px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 6px;
+  background: var(--mat-sys-surface-container-lowest);
+  box-shadow: 0 4px 12px rgba(15, 27, 42, 0.1);
+}
+
+.result-option {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 0;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container-lowest);
+  color: var(--mat-sys-on-surface);
+  text-align: left;
+  cursor: pointer;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--mat-sys-surface-container);
+  }
+
+  &:disabled {
+    color: var(--mat-sys-on-surface-variant);
+    cursor: default;
+  }
+
+  small {
+    display: block;
+    margin-top: 2px;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.empty-result,
+.field-error {
+  margin: 0;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.form-error {
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+
+.order-success {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 6px;
+  background: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
+.order-fields {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.doctor-field {
+  min-width: 0;
+}
+
+.tests-section {
+  margin-top: 24px;
+}
+
+.section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  span {
+    color: var(--mat-sys-on-surface-variant);
+    font-size: 13px;
+  }
+}
+
+.test-results {
+  margin-bottom: 12px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 14px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 6px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th,
+td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  text-align: left;
+  vertical-align: middle;
+}
+
+thead th,
+tfoot th {
+  background: var(--mat-sys-surface-container);
+  font-weight: 600;
+}
+
+td small {
+  display: block;
+  margin-top: 2px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.empty-tests {
+  padding: 22px;
+  color: var(--mat-sys-on-surface-variant);
+  text-align: center;
+}
+
+.remove-button {
+  padding: 6px 9px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 5px;
+  background: var(--mat-sys-surface-container-lowest);
+  color: var(--mat-sys-on-surface);
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+.form-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.form-actions .btn-primary {
+  border-color: var(--mat-sys-primary);
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--mat-sys-primary) 85%, #000);
+  }
+
+  .material-icons {
+    font-size: 20px;
+  }
+}
+
+.form-actions .btn-outline-secondary {
+  border-color: var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container-lowest);
+  color: var(--mat-sys-on-surface);
+}
+
+@media (max-width: 640px) {
+  .order-body {
+    padding: 16px;
+  }
+
+  .order-header {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+  }
+
+  .form-actions .btn {
+    flex: 1;
+  }
+}

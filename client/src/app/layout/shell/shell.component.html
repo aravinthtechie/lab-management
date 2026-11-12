@@ -1,0 +1,96 @@
+<ng-template #nav>
+  <a class="brand" routerLink="/dashboard">
+    <mat-icon>water_drop</mat-icon><span>LABCARE</span>
+  </a>
+
+  <nav [attr.aria-label]="'Main menu' | translate">
+    @for (g of groups; track g.title) {
+      @if (g.title) { <div class="group-title">{{ g.title | translate }}</div> }
+      @for (m of g.items; track m.path) {
+        <a class="nav-item" [routerLink]="'/' + m.path" routerLinkActive="active"
+           (click)="menuOpen.set(false)">
+          <mat-icon>{{ m.icon }}</mat-icon>
+          <span>{{ m.label | translate }}</span>
+        </a>
+      }
+    }
+  </nav>
+
+  <div class="help">
+    <mat-icon>headset_mic</mat-icon>
+    <div class="lh-sm"><small>{{ 'Need Help?' | translate }}</small><br><strong>+91 98765 43210</strong></div>
+  </div>
+</ng-template>
+
+<div class="d-flex min-vh-100">
+
+  <!-- Large screens: fixed sidebar -->
+  <aside class="sidebar desktop d-none d-lg-flex flex-column" [attr.aria-label]="'Sidebar' | translate">
+    <ng-container [ngTemplateOutlet]="nav" />
+  </aside>
+
+  <!-- Phones and tablets: slide-in drawer -->
+  <div class="d-lg-none">
+    <aside class="offcanvas offcanvas-start sidebar" [class.show]="menuOpen()"
+           role="dialog" aria-modal="true" [attr.aria-label]="'Menu' | translate" tabindex="-1">
+      <ng-container [ngTemplateOutlet]="nav" />
+    </aside>
+    @if (menuOpen()) {
+      <div class="offcanvas-backdrop fade show" (click)="menuOpen.set(false)"></div>
+    }
+  </div>
+
+  <div class="main flex-grow-1 d-flex flex-column">
+
+    <header class="topbar d-flex align-items-center gap-2 gap-md-3 px-3 py-2">
+      <button mat-icon-button type="button" class="d-lg-none"
+              (click)="menuOpen.set(true)" [attr.aria-label]="'Open menu' | translate">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <label class="search d-none d-sm-flex align-items-center flex-grow-1 gap-2">
+        <mat-icon>search</mat-icon>
+        <input type="search" class="form-control" [attr.aria-label]="'Search' | translate"
+               [placeholder]="'Search patient, order or sample...' | translate">
+      </label>
+      <span class="flex-grow-1 d-sm-none"></span>
+
+      <app-theme-switcher />
+      <app-language-switcher />
+
+      <button mat-icon-button type="button" class="notification-button"
+              [attr.aria-label]="'Notifications, 3 new' | translate">
+        <mat-icon>notifications</mat-icon>
+        <span class="notification-count">3</span>
+      </button>
+
+      <button type="button" class="user-btn d-flex align-items-center gap-2" [matMenuTriggerFor]="userMenu">
+        <span class="avatar">{{ auth.initials }}</span>
+        <span class="text-start lh-sm d-none d-md-block">
+          <strong class="d-block">{{ auth.fullName }}</strong>
+          <small class="text-body-secondary">{{ auth.title }}</small>
+        </span>
+        <mat-icon class="d-none d-md-inline">expand_more</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item type="button" (click)="auth.logout()">
+          <mat-icon>logout</mat-icon><span>{{ 'Logout' | translate }}</span>
+        </button>
+      </mat-menu>
+    </header>
+
+    <main class="flex-grow-1 p-3 p-lg-4">
+      <router-outlet />
+    </main>
+
+    <footer class="footer d-flex flex-wrap align-items-center justify-content-between gap-2 px-3 px-lg-4 py-2">
+      <span><strong class="brand-text">LABCARE</strong> | {{ 'Laboratory Management System' | translate }}</span>
+      <span class="d-flex align-items-center gap-3">
+        <span><span class="dot"></span>{{ 'System Online' | translate }}</span>
+        @if (auth.lastLogin; as last) {
+          <span class="text-body-secondary d-none d-sm-inline">{{ 'Last Login' | translate }}: {{ last | date: 'MMM d, y h:mm a' }}</span>
+        }
+      </span>
+    </footer>
+  </div>
+</div>
