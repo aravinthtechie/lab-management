@@ -1,0 +1,124 @@
+<div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-3">
+  <div>
+    <h1 class="page-title">{{ 'Dashboard' | translate }}</h1>
+    <p class="text-body-secondary mb-0">{{ "Here is today's laboratory overview." | translate }}</p>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    <select class="form-select form-select-sm w-auto" [attr.aria-label]="'Branch' | translate">
+      @for (b of branchOptions; track b) { <option>{{ b | translate }}</option> }
+    </select>
+    <input type="date" class="form-control form-control-sm w-auto" [attr.aria-label]="'Date' | translate"
+           [value]="today | date: 'yyyy-MM-dd'">
+  </div>
+</div>
+
+<!-- Stat cards -->
+<div class="row g-3 mb-3">
+  @for (s of stats; track s.label) {
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="stat" [style.--tone]="s.color">
+        <mat-icon>{{ s.icon }}</mat-icon>
+        <div class="value">{{ s.value }}</div>
+        <div class="label">{{ s.label | translate }}</div>
+        @if (s.chip) {
+          <span class="chip">{{ s.chip | translate }}</span>
+        } @else if (s.up) {
+          <small class="up">&uarr; {{ s.note | translate }}</small>
+        } @else {
+          <small class="text-body-secondary">{{ s.note | translate }}</small>
+        }
+      </div>
+    </div>
+  }
+</div>
+
+<div class="row g-3 mb-3">
+  <!-- Branch performance -->
+  <div class="col-12 col-lg-7">
+    <section class="lab-card">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="card-title">{{ 'Branch Performance' | translate }}</h2>
+        <a class="lab-link" routerLink="/analytics">{{ 'View Details' | translate }} &rarr;</a>
+      </div>
+      <div class="row g-2 chart text-center">
+        @for (b of branches; track b.name) {
+          <div class="col-3">
+            <div class="bar-area">
+              <div class="bar" [style.height.%]="b.value" [style.background]="b.color">
+                <span>{{ b.value }}</span>
+              </div>
+            </div>
+            <div class="bar-label">{{ b.name | translate }}</div>
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+
+  <!-- Pending activities -->
+  <div class="col-12 col-lg-5">
+    <section class="lab-card">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="card-title">{{ 'Pending Activities' | translate }}</h2>
+        <span class="lab-badge danger">{{ 'Attention' | translate }}</span>
+      </div>
+      @for (p of pending; track p.title) {
+        <div class="pending d-flex align-items-center gap-3" [style.--tone]="p.color">
+          <span class="tile"><mat-icon>{{ p.icon }}</mat-icon></span>
+          <div class="flex-grow-1">
+            <div class="fw-semibold">{{ p.title | translate }}</div>
+            <small class="text-body-secondary">{{ p.sub | translate }}</small>
+          </div>
+          <span class="count">{{ p.count }}</span>
+        </div>
+      }
+    </section>
+  </div>
+</div>
+
+<div class="row g-3">
+  <!-- Recent orders -->
+  <div class="col-12 col-lg-7">
+    <section class="lab-card">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="card-title">{{ 'Recent Orders' | translate }}</h2>
+        <a class="lab-link" routerLink="/test-orders">{{ 'View All' | translate }} &rarr;</a>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0 orders">
+          <thead>
+            <tr><th>{{ 'Order No' | translate }}</th><th>{{ 'Patient Name' | translate }}</th><th>{{ 'Branch' | translate }}</th><th>{{ 'Test' | translate }}</th><th>{{ 'Status' | translate }}</th></tr>
+          </thead>
+          <tbody>
+            @for (o of orders; track o.no) {
+              <tr>
+                <td>{{ o.no }}</td>
+                <td>{{ o.patient }}</td>
+                <td>{{ o.branch }}</td>
+                <td>{{ o.test }}</td>
+                <td><span class="lab-badge" [class]="statusClass(o.status)">{{ o.status | translate }}</span></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="col-12 col-lg-5">
+    <section class="lab-card">
+      <h2 class="card-title mb-3">{{ 'Quick Actions' | translate }}</h2>
+      <div class="row row-cols-2 row-cols-sm-4 row-cols-lg-2 row-cols-xxl-4 g-2">
+        @for (q of quick; track q.label) {
+          <div class="col">
+            <a class="quick" [routerLink]="q.link">
+              <mat-icon>{{ q.icon }}</mat-icon>
+              <span>{{ q.label | translate }}</span>
+            </a>
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</div>

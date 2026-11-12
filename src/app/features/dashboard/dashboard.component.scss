@@ -1,0 +1,62 @@
+.card-title { margin: 0; font: var(--mat-sys-title-medium); font-weight: 700; }
+
+.stat {
+  --tone: var(--mat-sys-primary);
+  height: 100%;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--tone) 14%, var(--mat-sys-surface));
+
+  mat-icon { width: 36px; height: 36px; font-size: 36px; color: var(--tone); }
+  .value { margin-top: 8px; font-size: 2rem; font-weight: 700; line-height: 1.1; }
+  .label { font-weight: 500; }
+  .up { color: var(--lab-success); font-weight: 500; }
+  .chip {
+    display: inline-block; margin-top: 4px; padding: 2px 10px;
+    border-radius: 999px; font-size: .8rem; font-weight: 600; color: var(--tone);
+    background: color-mix(in srgb, var(--tone) 22%, var(--mat-sys-surface));
+  }
+}
+
+.chart { padding-top: 28px; }
+.bar-area {
+  display: flex; align-items: flex-end; justify-content: center;
+  height: 160px; border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+.bar {
+  position: relative; width: min(56px, 70%); border-radius: 8px 8px 0 0;
+  span { position: absolute; top: -24px; left: 0; right: 0; font-weight: 600; }
+}
+.bar-label { margin-top: 8px; font-size: .85rem; color: var(--mat-sys-on-surface-variant); }
+
+.pending {
+  --tone: var(--mat-sys-primary);
+  & + .pending { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--mat-sys-outline-variant); }
+  .tile {
+    display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px;
+    color: var(--tone); background: color-mix(in srgb, var(--tone) 18%, var(--mat-sys-surface));
+  }
+  .count {
+    min-width: 36px; padding: 4px 10px; border-radius: 999px; text-align: center;
+    font-weight: 700; color: var(--tone);
+    background: color-mix(in srgb, var(--tone) 16%, var(--mat-sys-surface));
+  }
+}
+
+.orders {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--mat-sys-on-surface);
+  --bs-table-border-color: var(--mat-sys-outline-variant);
+  font-size: .85rem;
+  thead th { white-space: nowrap; font-size: .8rem; font-weight: 600; color: var(--mat-sys-on-surface-variant); }
+}
+
+.quick {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 14px 8px; border-radius: 14px;
+  font-size: .85rem; text-align: center; text-decoration: none;
+  color: var(--mat-sys-on-surface);
+  background: color-mix(in srgb, var(--mat-sys-primary) 10%, var(--mat-sys-surface));
+  mat-icon { width: 28px; height: 28px; font-size: 28px; color: var(--mat-sys-primary); }
+  &:hover { background: color-mix(in srgb, var(--mat-sys-primary) 18%, var(--mat-sys-surface)); }
+}

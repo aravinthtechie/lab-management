@@ -1,0 +1,133 @@
+<div class="row g-0 login-page">
+
+  <!-- LEFT: login form -->
+  <section class="col-12 col-lg-6 d-flex flex-column form-side">
+
+    <div class="d-flex align-items-center justify-content-between p-3">
+      <div class="brand-sm d-flex align-items-center gap-2 d-lg-none">
+        <mat-icon>water_drop</mat-icon><span>LABCARE</span>
+      </div>
+      <span class="d-none d-lg-block"></span>
+
+      <div class="d-flex align-items-center gap-1">
+        <app-language-switcher />
+        <app-theme-switcher />
+      </div>
+    </div>
+
+    <div class="login-content flex-grow-1 d-flex align-items-center justify-content-center p-3">
+      @if (forgotPassword()) {
+      <form class="login-card w-100" [formGroup]="resetForm" (ngSubmit)="requestPasswordReset()" novalidate>
+        <h1>{{ 'Reset your password' | translate }}</h1>
+        <p class="sub">{{ 'Enter the email address associated with your account. If it exists, we’ll send password reset instructions.' | translate }}</p>
+
+        @if (resetSent()) {
+          <div class="success" role="status">
+            {{ 'If an account matches that email, password reset instructions will be sent.' | translate }}
+          </div>
+        } @else {
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'Email address' | translate }}</mat-label>
+            <mat-icon matPrefix>mail</mat-icon>
+            <input matInput formControlName="email" [placeholder]="'name@example.com' | translate"
+                   autocomplete="email" type="email">
+            @if (resetForm.controls.email.hasError('required') && resetForm.controls.email.touched) {
+              <mat-error>{{ 'Email address is required' | translate }}</mat-error>
+            } @else if (resetForm.controls.email.hasError('email') && resetForm.controls.email.touched) {
+              <mat-error>{{ 'Enter a valid email address' | translate }}</mat-error>
+            }
+          </mat-form-field>
+
+          @if (resetError()) { <p class="error" role="alert">{{ resetError() | translate }}</p> }
+
+          <button mat-flat-button class="submit" type="submit" [disabled]="resetLoading()">
+            @if (resetLoading()) { <mat-spinner diameter="22" /> }
+            @else { {{ 'Send reset instructions' | translate }} }
+          </button>
+        }
+
+        <button mat-button class="back-to-login" type="button" (click)="backToLogin()">
+          <mat-icon>arrow_back</mat-icon>{{ 'Back to sign in' | translate }}
+        </button>
+      </form>
+      } @else {
+      <form class="login-card w-100" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <h1>{{ 'Welcome back!' | translate }}</h1>
+        <p class="sub">{{ 'Sign in to manage your laboratory operations.' | translate }}</p>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'Email / Username' | translate }}</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput formControlName="username" [placeholder]="'Enter your username' | translate"
+                 autocomplete="username" autocapitalize="none">
+          @if (form.controls.username.hasError('required')) {
+            <mat-error>{{ 'Username is required' | translate }}</mat-error>
+          } @else if (form.controls.username.hasError('minlength')) {
+            <mat-error>{{ 'Use at least 3 characters' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'Password' | translate }}</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput formControlName="password" [placeholder]="'Enter your password' | translate"
+                 autocomplete="current-password" [type]="hide() ? 'password' : 'text'">
+          <button mat-icon-button matSuffix type="button" (click)="hide.set(!hide())"
+                  [attr.aria-label]="(hide() ? 'Show password' : 'Hide password') | translate"
+                  [attr.aria-pressed]="!hide()">
+            <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (form.controls.password.hasError('required')) {
+            <mat-error>{{ 'Password is required' | translate }}</mat-error>
+          } @else if (form.controls.password.hasError('minlength')) {
+            <mat-error>{{ 'Use at least 6 characters' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+          <mat-checkbox formControlName="remember">{{ 'Remember me' | translate }}</mat-checkbox>
+          <button class="lab-link forgot-link" type="button" (click)="openForgotPassword()">{{ 'Forgot password?' | translate }}</button>
+        </div>
+
+        @if (error()) { <p class="error" role="alert">{{ error() | translate }}</p> }
+
+        <button mat-flat-button class="submit" type="submit" [disabled]="loading()">
+          @if (loading()) { <mat-spinner diameter="22" /> }
+          @else { <ng-container><mat-icon>arrow_forward</mat-icon>{{ 'Sign In' | translate }}</ng-container> }
+        </button>
+
+        <div class="divider"><span>{{ 'or' | translate }}</span></div>
+
+        <button mat-stroked-button class="google" type="button" (click)="googleSignIn()">
+          <svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          {{ 'Continue with Google' | translate }}
+        </button>
+
+        <p class="auth-only"><mat-icon>verified_user</mat-icon>{{ 'Authorized personnel only' | translate }}</p>
+
+        @if (auth.isMock) { <p class="demo">{{ 'Demo mode: admin / admin123' | translate }}</p> }
+      </form>
+      }
+    </div>
+
+    <footer class="login-footer text-center small text-body-secondary px-3 py-2">
+      &copy; {{ year }} LABCARE. {{ 'All rights reserved.' | translate }}
+    </footer>
+  </section>
+
+  <!-- RIGHT: logo (hidden on phones and tablets) -->
+  <aside class="col-lg-6 d-none d-lg-flex flex-column align-items-center justify-content-center brand-side">
+    <mat-icon class="logo-big">water_drop</mat-icon>
+    <h2 class="brand-name">LABCARE</h2>
+    <p class="brand-sub">{{ 'Laboratory Management System' | translate }}</p>
+    <svg class="pulse w-100" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
+      <polyline points="0,30 120,30 140,30 155,8 172,52 188,18 200,30 400,30"
+                fill="none" stroke="currentColor" stroke-width="2" />
+    </svg>
+  </aside>
+</div>

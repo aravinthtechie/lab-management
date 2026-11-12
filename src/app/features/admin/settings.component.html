@@ -1,0 +1,103 @@
+<section class="settings-page">
+  <header class="settings-heading">
+    <div>
+      <p class="eyebrow">ADMINISTRATION</p>
+      <h1>Settings</h1>
+      <p class="subtitle">Manage laboratory preferences and operational defaults.</p>
+    </div>
+    <div class="storage-note">
+      <mat-icon aria-hidden="true">info</mat-icon>
+      <span>Saved in this browser only</span>
+    </div>
+  </header>
+
+  @if (storageError) {
+    <div class="feedback feedback-error" role="alert">{{ storageError }}</div>
+  }
+  @if (saved) {
+    <div class="feedback feedback-success" role="status">Your settings have been saved in this browser.</div>
+  }
+
+  <div class="settings-layout">
+    <nav class="settings-nav" aria-label="Settings categories">
+      @for (category of categories; track category.id) {
+        <button type="button" class="category-button"
+                [class.active]="activeCategory.id === category.id"
+                [attr.aria-current]="activeCategory.id === category.id ? 'page' : null"
+                (click)="setCategory(category)">
+          <mat-icon aria-hidden="true">{{ category.icon }}</mat-icon>
+          <span>{{ category.label }}</span>
+          <mat-icon class="category-chevron" aria-hidden="true">chevron_right</mat-icon>
+        </button>
+      }
+    </nav>
+
+    <section class="settings-card" [attr.aria-labelledby]="'category-' + activeCategory.id">
+      <header class="category-heading">
+        <div class="category-icon"><mat-icon aria-hidden="true">{{ activeCategory.icon }}</mat-icon></div>
+        <div>
+          <h2 [id]="'category-' + activeCategory.id">{{ activeCategory.label }}</h2>
+          <p>{{ activeCategory.description }}</p>
+        </div>
+        @if (activeCategory.link; as link) {
+          <a class="management-link" [routerLink]="link.path">
+            {{ link.label }} <mat-icon aria-hidden="true">arrow_forward</mat-icon>
+          </a>
+        }
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+        <div class="field-grid">
+          @for (field of activeCategory.fields; track field.key) {
+            @if (field.type === 'checkbox') {
+              <label class="checkbox-field">
+                <input type="checkbox" [formControlName]="field.key">
+                <span>
+                  <strong>{{ field.label }}</strong>
+                  @if (field.help) { <small>{{ field.help }}</small> }
+                </span>
+              </label>
+            } @else {
+              <div class="field" [class.field-wide]="field.type === 'textarea'">
+                <label class="field-label" [for]="field.key">{{ field.label }}</label>
+                @if (field.type === 'textarea') {
+                  <textarea class="form-control" [id]="field.key" [formControlName]="field.key"
+                            [placeholder]="field.placeholder ?? ''" rows="3"></textarea>
+                } @else if (field.type === 'select') {
+                  <select class="form-select" [id]="field.key" [formControlName]="field.key">
+                    @for (option of field.options ?? []; track option) {
+                      <option [value]="option">{{ option }}</option>
+                    }
+                  </select>
+                } @else {
+                  <input class="form-control" [id]="field.key" [type]="field.type"
+                         [formControlName]="field.key" [placeholder]="field.placeholder ?? ''"
+                         [attr.min]="field.min ?? null" [attr.max]="field.max ?? null"
+                         [attr.step]="field.type === 'number' ? '1' : null">
+                }
+                @if (field.help) { <small class="field-help">{{ field.help }}</small> }
+                @if (controlInvalid(field.key)) {
+                  <small class="field-error">
+                    @if (form.controls[field.key].hasError('required')) { This field is required. }
+                    @else if (form.controls[field.key].hasError('email')) { Enter a valid email address. }
+                    @else if (form.controls[field.key].hasError('pattern')) { Enter a URL that starts with http:// or https://. }
+                    @else { Enter a value within the allowed range. }
+                  </small>
+                }
+              </div>
+            }
+          }
+        </div>
+
+        <footer class="form-actions">
+          <button class="btn btn-primary" type="submit" [disabled]="!form.dirty && !storageError">
+            <mat-icon aria-hidden="true">save</mat-icon> Save settings
+          </button>
+          <button class="btn btn-outline-secondary" type="button" (click)="resetChanges()">
+            Reset changes
+          </button>
+        </footer>
+      </form>
+    </section>
+  </div>
+</section>
